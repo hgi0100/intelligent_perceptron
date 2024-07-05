@@ -1,6 +1,6 @@
 /*
 trait:          neuron
-Author:         Neil Crago <n.j.crago@gmail.com>
+Author:         Neil Crago
 start date:     13/02/24
 
 Description:
@@ -52,6 +52,7 @@ struct CodeStruct {
 }
 
 pub fn neuron_chat() {
+    
     let (tx, rx) = mpsc::channel();
     let mut rng = thread_rng();
     let code = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29];
@@ -101,6 +102,7 @@ pub fn neuron_chat() {
 
 // define the Neuron trait
 pub(crate) trait Neuron {
+    
     fn new(inputs: usize, activation: fn(f64) -> f64) -> Self;
     fn set_weights(&mut self, weights: Vec<f64>);
     fn set_bias(&mut self, bias: f64);
@@ -111,6 +113,7 @@ pub(crate) trait Neuron {
 }
 
 pub struct SuperNeuron {
+    
     inputs: usize,              // the number of inputs
     weights: Vec<f64>,          // the vector of weights
     bias: f64,                  // the bias
@@ -119,11 +122,14 @@ pub struct SuperNeuron {
 
 // implement the Neuron trait for the SuperNeuron struct
 impl Neuron for SuperNeuron {
+    
     // create a new SuperNeuron with the given inputs and activation function
     fn new(inputs: usize, activation: fn(f64) -> f64) -> Self {
+    
         // initialize the weights and the bias to zero
         let weights = vec![0.0; inputs];
         let bias = 0.0;
+        
         // return the SuperNeuron
         SuperNeuron {
             inputs,
@@ -135,14 +141,17 @@ impl Neuron for SuperNeuron {
 
     // set the weights of the SuperNeuron to the given vector
     fn set_weights(&mut self, weights: Vec<f64>) {
+        
         // check if the length of the vector matches the number of inputs
         assert_eq!(weights.len(), self.inputs);
+        
         // assign the weights to the SuperNeuron
         self.weights = weights;
     }
 
     // set the bias of the SuperNeuron to the given value
     fn set_bias(&mut self, bias: f64) {
+        
         // assign the bias to the SuperNeuron
         self.bias = bias;
     }
@@ -163,16 +172,21 @@ impl Neuron for SuperNeuron {
 
     // compute the output of the SuperNeuron given a vector of inputs
     fn output(&self, inputs: Vec<f64>) -> f64 {
+        
         // check if the length of the vector matches the number of inputs
         assert_eq!(inputs.len(), self.inputs);
+        
         // compute the weighted sum of the inputs
         let mut sum = 0.0;
+        
         //for i in 0..self.inputs {
         for (i, inpiter) in inputs.iter().enumerate().take(self.inputs) {
             sum += self.weights[i] * inpiter;
         }
+        
         // add the bias
         sum += self.bias;
+        
         // apply the activation function
         (self.activation)(sum)
     }
